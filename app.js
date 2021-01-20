@@ -37,9 +37,28 @@ io.on("connection", (socket) => {
   socket.on("joinRoom", (data) => {
     console.log(data);
     socket.join(data.room);
+    socket.broadcast.to(data.room).emit("chatMessage", {
+      username: "BOT",
+      message: `${data.username} Joined Chat !`,
+    });
   });
+  // =
+  socket.on("changeRoom", (data) => {
+    console.log(data);
+    socket.leave(data.oldRoom);
+    socket.join(data.room);
+    socket.broadcast.to(data.room).emit("chatMessage", {
+      username: "BOT",
+      message: `${data.username} Joined Chat !`,
+    });
+  });
+  // =
   socket.on("roomMessage", (data) => {
     io.to(data.room).emit("chatMessage", data);
+  });
+  socket.on("typing", (data) => {
+    console.log(data);
+    socket.broadcast.to(data.room).emit("typingMessage", data);
   });
 });
 // ==============================
