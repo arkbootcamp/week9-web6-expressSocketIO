@@ -13,13 +13,34 @@ app.use(cors());
 // ==============================
 const http = require("http");
 const server = http.createServer(app);
-const io = socket(server);
+const io = socket(server, {
+  cors: {
+    origin: "*",
+  },
+});
 io.on("connection", (socket) => {
   console.log("Socket.io Connect !");
   // global Message = pesan yang di kirimkan ke semua client
   // private Message = pesan yang hanya dikirimkan ke client saja
   // broadcast Message = pesan yang di kirimkan ke semua client kecuali si pengirim
   // room = ruangan pesan yang bisa di akses/ dimasuki client
+  socket.on("globalMessage", (data) => {
+    console.log(data);
+    io.emit("chatMessage", data);
+  });
+  socket.on("privateMessage", (data) => {
+    socket.emit("chatMessage", data);
+  });
+  socket.on("broadcastMessage", (data) => {
+    socket.broadcast.emit("chatMessage", data);
+  });
+  socket.on("joinRoom", (data) => {
+    console.log(data);
+    socket.join(data.room);
+  });
+  socket.on("roomMessage", (data) => {
+    io.to(data.room).emit("chatMessage", data);
+  });
 });
 // ==============================
 
