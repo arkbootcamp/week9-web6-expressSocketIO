@@ -16,6 +16,10 @@ const server = http.createServer(app);
 const io = socket(server);
 io.on("connection", (socket) => {
   console.log("Socket.io Connect !");
+  // global Message = pesan yang di kirimkan ke semua client
+  // private Message = pesan yang hanya dikirimkan ke client saja
+  // broadcast Message = pesan yang di kirimkan ke semua client kecuali si pengirim
+  // room = ruangan pesan yang bisa di akses/ dimasuki client
 });
 // ==============================
 
