@@ -67,8 +67,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
-app.use("/", routerNavigation);
+app.use("/api2", routerNavigation);
 
-server.listen(3000, () => {
-  console.log("Listening on Port 3000");
+server.listen(3001, () => {
+  console.log("Listening on Port 3001");
 });
