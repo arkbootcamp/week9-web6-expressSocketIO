@@ -3,22 +3,22 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 const routerNavigation = require("./src/routesNavigation");
-// ==============================
 const socket = require("socket.io");
-// ==============================
 
 const app = express();
 app.use(cors());
 
-// ==============================
 const http = require("http");
 const server = http.createServer(app);
+// TAMBAHKAN SYNTAX YANG ADA DI DALAM INI
+// =========================================
 const io = socket(server, {
   cors: {
     origin: "*",
   },
   path: "/api2/socket.io",
 });
+// =========================================
 io.on("connection", (socket) => {
   console.log("Socket.io Connect !");
   // global Message = pesan yang di kirimkan ke semua client
@@ -43,7 +43,6 @@ io.on("connection", (socket) => {
       message: `${data.username} Joined Chat !`,
     });
   });
-  // =
   socket.on("changeRoom", (data) => {
     console.log(data);
     socket.leave(data.oldRoom);
@@ -62,7 +61,6 @@ io.on("connection", (socket) => {
     socket.broadcast.to(data.room).emit("typingMessage", data);
   });
 });
-// ==============================
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
